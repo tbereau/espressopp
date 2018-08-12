@@ -58,6 +58,7 @@ namespace espressopp {
             // Running sum of each weight and number of counts
             RealND weightSum;
             int weightCounts;
+            int weightMax;
             // Renormalize collective variables: std
             RealND colVarSd;
             // characteristic decay length of the interpolation
@@ -156,6 +157,10 @@ namespace espressopp {
             void setAlpha(real _r) { alpha = _r; }
 
             void computeColVarWeights(const Real3D& dist, const bc::BC& bc);
+
+            int getColVarWeightMax() const { return weightMax; };
+
+            RealND getColVarWeights() const { return weights; };
 
             void setColVar(const Real3D& dist, const bc::BC& bc);
 

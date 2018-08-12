@@ -5,7 +5,7 @@
       Max-Planck-Institute for Polymer Research & Fraunhofer SCAI
   Copyright (C) 2017
       Jakub Krajniak (jkrajniak at gmail.com)
-  
+
   This file is part of ESPResSo++.
 
   ESPResSo++ is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@
 #include "Real3D.hpp"
 #include "Int3D.hpp"
 #include <map>
+#include "interaction/Potential.hpp"
 
 namespace espressopp {
 
@@ -54,6 +55,7 @@ namespace espressopp {
     Real3D fm;
     int state;
     longint res_id;
+    const Potential &pot_cv;
   private:
     friend class boost::serialization::access;
     template< class Archive >
@@ -72,6 +74,7 @@ namespace espressopp {
       ar & lambdaDeriv;
       ar & state;
       ar & res_id;
+      ar & pot_cv;
     }
   };
 
@@ -223,6 +226,7 @@ namespace espressopp {
       p.state        = 0;
       p.pib          = 0;
       p.res_id       = 0;
+      p.pot_cv       = nullptr;
     }
 
     // getter and setter used for export in Python

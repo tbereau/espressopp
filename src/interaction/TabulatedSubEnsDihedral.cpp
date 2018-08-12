@@ -170,6 +170,7 @@ namespace espressopp {
             for (int i=0; i<numInteractions; ++i)
                 weightSum[i] += weights[i];
             weightCounts += 1;
+            weightMax = maxWeightI;
         }
 
         // Collective variables
