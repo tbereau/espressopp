@@ -38,7 +38,8 @@
 #include "Real3D.hpp"
 #include "Int3D.hpp"
 #include <map>
-#include "interaction/Potential.hpp"
+
+class Potential;
 
 namespace espressopp {
 
@@ -55,7 +56,8 @@ namespace espressopp {
     Real3D fm;
     int state;
     longint res_id;
-    const Potential &pot_cv;
+    shared_ptr<Potential> pot_cv;
+
   private:
     friend class boost::serialization::access;
     template< class Archive >
@@ -374,6 +376,12 @@ namespace espressopp {
     int getResId() const { return p.res_id; }
     void setResId(const int& _res_id) { p.res_id = _res_id; }
 
+    // pot_cv (associated bonded potential for surface hopping)
+    shared_ptr<Potential>& pot_cv() { return p.pot_cv; }
+    const shared_ptr<Potential>& pot_cv() const { return p.pot_cv; }
+    shared_ptr<Potential> getPotCv() const { return p.pot_cv; }
+    void setPotCv(shared_ptr<Potential> _pot_cv);
+
     static void registerPython();
 
     void copyAsGhost(const Particle& src, int extradata, const Real3D& shift) {
@@ -405,6 +413,9 @@ namespace espressopp {
       ar &p &r &m &f &l;
     }
   };
+
+  inline void Particle::
+  setPotCv(shared_ptr<Potential> _pot_cv) { p.pot_cv = _pot_cv; }
 
   struct ParticleList
     : public esutil::ESPPContainer < std::vector< Particle > >
