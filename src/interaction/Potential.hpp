@@ -63,6 +63,7 @@ namespace espressopp {
       virtual void computeColVarWeights(const Real3D& dist, const bc::BC& bc) = 0;
       virtual RealND getColVarWeights() const = 0;
       virtual int getColVarWeightMax() const = 0;
+      virtual void setColVarWeightMax(int _w) = 0;
 
       virtual void setShift(real _shift) = 0;
       virtual real getShift() const = 0;
@@ -117,6 +118,7 @@ namespace espressopp {
       virtual void computeColVarWeights(const Real3D& dist, const bc::BC& bc);
       virtual RealND getColVarWeights() const;
       virtual int getColVarWeightMax() const;
+      virtual void setColVarWeightMax(int _w);
 
 
       // Implements the non-virtual interface
@@ -335,6 +337,13 @@ namespace espressopp {
     getColVarWeightMax() const {
         // in general return 0
         return 0;
+    }
+
+    template < class Derived >
+    inline void
+    PotentialTemplate< Derived >::
+    setColVarWeightMax(int _w) {
+        // in general do nothing
     }
 
     // Energy computation

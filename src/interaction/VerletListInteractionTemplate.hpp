@@ -123,8 +123,12 @@ namespace espressopp {
         Particle &p2 = *it->second;
         int type1 = p1.type();
         int type2 = p2.type();
-        const Potential &potential = getPotential(type1, type2);
+        Potential &potential = getPotential(type1, type2);
         // shared_ptr<Potential> potential = getPotential(type1, type2);
+
+        // SubEns
+        if (p1.sub_ens_state() == p2.sub_ens_state())
+            potential.setColVarWeightMax(p1.sub_ens_state());
 
         Real3D force(0.0);
         if(potential._computeForce(force, p1, p2)) {

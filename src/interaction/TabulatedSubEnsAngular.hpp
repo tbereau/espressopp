@@ -154,6 +154,13 @@ namespace espressopp {
 
                 int getColVarWeightMax() const { return weightMax; };
 
+                void setColVarWeightMax(int _w) {
+                    for (int i=0; i<numInteractions; ++i) {
+                        if (i == _w) weights[i] = 1.0;
+                        else         weights[i] = 0.0;
+                    }
+                }
+
                 RealND getColVarWeights() const { return weights; };
 
                 void setColVar(const Real3D& dist12,
