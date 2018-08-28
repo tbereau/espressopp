@@ -73,18 +73,6 @@ namespace espressopp {
 }
 
 
-namespace espressopp {
-  void
-  Particle::
-  registerPython() {
-    using namespace python;
-    class_< Particle >("_TmpParticle", no_init)
-      .add_property("pot_cv", &Particle::getPotCv, &Particle::setPotCv)
-      ;
-  }
-}
-
-
 
 //     class PythonPotential
 //       : public espressopp::python::wrapper< Potential >,

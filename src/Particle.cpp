@@ -49,6 +49,7 @@ namespace espressopp {
       .add_property("isGhost", &Particle::getGhostStatus, &Particle::setGhostStatus)
       .add_property("lambda_adr", &Particle::getLambda, &Particle::setLambda)
       .add_property("lambda_adrd", &Particle::getLambdaDeriv, &Particle::setLambdaDeriv)
+      .add_property("sub_ens_state", &Particle::getSubEnsState, &Particle::setSubEnsState)
       .add_property("varmass", &Particle::getVarmass, &Particle::setVarmass)
       .add_property("state", &Particle::getState, &Particle::setState)
       .add_property("res_id", &Particle::getResId, &Particle::setResId)

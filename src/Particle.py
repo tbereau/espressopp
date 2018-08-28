@@ -303,9 +303,9 @@ class ParticleLocal(object):
     def res_id(self, val): self.__getTmp().res_id = val
 
     @property
-    def pot_cv(self): return self.__getTmp().pot_cv
-    @pot_cv.setter
-    def pot_cv(self, val): self.__getTmp().pot_cv = val
+    def sub_ens_state(self): return self.__getTmp().sub_ens_state
+    @sub_ens_state.setter
+    def sub_ens_state(self, val): self.__getTmp().sub_ens_state = val
 
     def getLocalData(self, key):
         tmp = self.storage.lookupRealParticle(self.pid)

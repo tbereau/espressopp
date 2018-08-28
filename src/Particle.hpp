@@ -39,8 +39,6 @@
 #include "Int3D.hpp"
 #include <map>
 
-class Potential;
-
 namespace espressopp {
 
   struct ParticleProperties {
@@ -56,7 +54,7 @@ namespace espressopp {
     Real3D fm;
     int state;
     longint res_id;
-    shared_ptr<Potential> pot_cv;
+    int sub_ens_state;
 
   private:
     friend class boost::serialization::access;
@@ -76,7 +74,7 @@ namespace espressopp {
       ar & lambdaDeriv;
       ar & state;
       ar & res_id;
-      ar & pot_cv;
+      ar & sub_ens_state;
     }
   };
 
@@ -212,23 +210,23 @@ namespace espressopp {
     void init() {
       m.v[0] = m.v[1] = m.v[2] = 0.0;
       m.modemom[0] = m.modemom[1] = m.modemom[2] = 0.0;
-      p.type         = 0;
-      p.mass         = 1.0;
-      p.q            = 0.0;
-      r.radius       = 1.0;
-      f.fradius      = 0.0;
-      p.fm           = 0.0;
-      m.vradius      = 0.0;
-      l.ghost        = false;
-      p.lambda       = 0.0;
+      p.type          = 0;
+      p.mass          = 1.0;
+      p.q             = 0.0;
+      r.radius        = 1.0;
+      f.fradius       = 0.0;
+      p.fm            = 0.0;
+      m.vradius       = 0.0;
+      l.ghost         = false;
+      p.lambda        = 0.0;
       p.varmass       = 0.0;
-      p.drift        = 0.0;
-      p.lambdaDeriv  = 0.0;
-      r.extVar       = 0.0;
-      p.state        = 0;
-      p.pib          = 0;
-      p.res_id       = 0;
-      p.pot_cv       = nullptr;
+      p.drift         = 0.0;
+      p.lambdaDeriv   = 0.0;
+      r.extVar        = 0.0;
+      p.state         = 0;
+      p.pib           = 0;
+      p.res_id        = 0;
+      p.sub_ens_state = 0;
     }
 
     // getter and setter used for export in Python
@@ -376,11 +374,11 @@ namespace espressopp {
     int getResId() const { return p.res_id; }
     void setResId(const int& _res_id) { p.res_id = _res_id; }
 
-    // pot_cv (associated bonded potential for surface hopping)
-    shared_ptr<Potential>& pot_cv() { return p.pot_cv; }
-    const shared_ptr<Potential>& pot_cv() const { return p.pot_cv; }
-    shared_ptr<Potential> getPotCv() const { return p.pot_cv; }
-    void setPotCv(shared_ptr<Potential> _pot_cv);
+    // sub_ens_state (associated state for surface hopping)
+    int& sub_ens_state() { return p.sub_ens_state; }
+    const int& sub_ens_state() const { return p.sub_ens_state; }
+    int getSubEnsState() const { return p.sub_ens_state; }
+    void setSubEnsState(const int& _sub_ens_state) { p.sub_ens_state = _sub_ens_state; };
 
     static void registerPython();
 
@@ -413,9 +411,6 @@ namespace espressopp {
       ar &p &r &m &f &l;
     }
   };
-
-  inline void Particle::
-  setPotCv(shared_ptr<Potential> _pot_cv) { p.pot_cv = _pot_cv; }
 
   struct ParticleList
     : public esutil::ESPPContainer < std::vector< Particle > >
