@@ -333,8 +333,8 @@ namespace espressopp {
     inline int
     PotentialTemplate< Derived >::
     getColVarWeightMax() const {
-        // in general return -1
-        return -1;
+        // in general return 0
+        return 0;
     }
 
     // Energy computation
