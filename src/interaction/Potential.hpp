@@ -64,6 +64,7 @@ namespace espressopp {
       virtual RealND getColVarWeights() const = 0;
       virtual int getColVarWeightMax() const = 0;
       virtual void setColVarWeightMax(int _w) = 0;
+      virtual void setColVarWeightPairMax(int _w1, int _w2) = 0;
 
       virtual void setShift(real _shift) = 0;
       virtual real getShift() const = 0;

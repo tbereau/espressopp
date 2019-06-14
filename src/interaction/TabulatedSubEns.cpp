@@ -92,6 +92,12 @@ namespace espressopp {
           }
     }
 
+    void TabulatedSubEns::addInteractionNB(int itype,
+        boost::python::str fname, int _w1, int _w2) {
+        TabulatedSubEns::addInteraction(itype, fname, RealND());
+        weightPairs.push_back( std::make_pair(_w1, _w2));
+    }
+
     void TabulatedSubEns::setColVarRef(
         const RealNDs& cvRefs){
         // Set the reference values of the collective variables
