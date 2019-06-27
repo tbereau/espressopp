@@ -94,7 +94,7 @@ namespace espressopp {
 
     void TabulatedSubEns::addInteractionNB(int itype,
         boost::python::str fname, int _w1, int _w2) {
-        TabulatedSubEns::addInteraction(itype, fname, RealND());
+        TabulatedSubEns::addInteraction(itype, fname, RealND(6));
         weightPairs.push_back( std::make_pair(_w1, _w2));
     }
 
@@ -266,6 +266,7 @@ namespace espressopp {
             .def("alpha_get", &TabulatedSubEns::getAlpha)
             .def("alpha_set", &TabulatedSubEns::setAlpha)
             .def("addInteraction", &TabulatedSubEns::addInteraction)
+            .def("addInteractionNB", &TabulatedSubEns::addInteractionNB)
             .def("colVarRefs_get", &TabulatedSubEns::getColVarRefs)
             .def("colVarRef_get", &TabulatedSubEns::getColVarRef)
             .def_pickle(TabulatedSubEns_pickle())

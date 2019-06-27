@@ -174,11 +174,11 @@ namespace espressopp {
             }
 
             void setColVarWeightPairMax(int _w1, int _w2) {
-                ascending(_w1, _w2);
+                if (_w1 > _w2) std::swap(_w1, _w2);
                 std::pair <int, int> p = std::make_pair(_w1, _w2);
                 for (int i=0; i<numInteractions; ++i) {
-                    if (p == weightPairs[i]) weights[i] = 1.0;
-                    else                     weights[i] = 0.0;
+                  if (p == weightPairs[i]) weights[i] = 1.0;
+                  else                     weights[i] = 0.0;
                 }
             }
 
@@ -223,14 +223,6 @@ namespace espressopp {
                                          cvsd, alp, rc);
       }
     };
-
-    template <typename T>
-    void ascending(T& dFirst, T& dSecond)
-    {
-        if (dFirst > dSecond)
-            std::swap(dFirst, dSecond);
-    }
-
   }
 }
 

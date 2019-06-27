@@ -120,6 +120,7 @@ namespace espressopp {
       virtual RealND getColVarWeights() const;
       virtual int getColVarWeightMax() const;
       virtual void setColVarWeightMax(int _w);
+      virtual void setColVarWeightPairMax(int _w1, int _w2);
 
 
       // Implements the non-virtual interface
@@ -344,6 +345,13 @@ namespace espressopp {
     inline void
     PotentialTemplate< Derived >::
     setColVarWeightMax(int _w) {
+        // in general do nothing
+    }
+
+    template < class Derived >
+    inline void
+    PotentialTemplate< Derived >::
+    setColVarWeightPairMax(int _w1, int _w2) {
         // in general do nothing
     }
 

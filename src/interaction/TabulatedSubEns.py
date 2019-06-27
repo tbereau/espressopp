@@ -271,7 +271,7 @@ if pmi.isController:
 				       'colVarSd_get', 'colVarSd_set',
 				       'dimension_get', 'filenames_get', 'filename_get',
 				       'filename_set', 'addInteraction', 'colVarRefs_get',
-				       'colVarRef_get']
+				       'colVarRef_get', 'addInteractionNB']
             )
 
     class VerletListAdressTabulatedSubEns(Interaction):
