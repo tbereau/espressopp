@@ -154,6 +154,7 @@ namespace espressopp {
         //const Potential &potential = getPotential(p1.type(), p2.type());
         Real3D dist12 = bc.getMinimumImageVector(p1.position(), p2.position());
         Real3D dist32 = bc.getMinimumImageVector(p3.position(), p2.position());
+        potential->computeColVarWeights(dist12, dist32, bc);
         e += potential->_computeEnergy(dist12, dist32);
       }
       real esum;

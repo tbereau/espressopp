@@ -118,7 +118,7 @@ namespace espressopp {
             if (weightCounts > 0 &&
                 maxWeightI < numInteractions-1 &&
                 maxWeight > 0. &&
-                weightSum[maxWeightI]/weightCounts < 0.98*targetProb[maxWeightI])
+                weightSum[maxWeightI]/weightCounts < targetProb[maxWeightI])
                 stuck = true;
             if (!stuck) {
                 maxWeight = 0.;
@@ -154,7 +154,7 @@ namespace espressopp {
                     else {
                         if (weightCounts > 0 &&
                             weights[i] > 0.01 &&
-                            weightSum[i]/weightCounts < 0.98*targetProb[i]) {
+                            weightSum[i]/weightCounts < targetProb[i]) {
                             weights[i] = 1.;
                             maxWeight = 1.;
                         }
@@ -163,7 +163,16 @@ namespace espressopp {
                 if (maxWeightI == numInteractions-1)
                     maxWeight = 1.;
                 weights[numInteractions-1] = 1. - maxWeight;
+            } else {
+                // Stuck. Full weight on the max surface
+                for (int i=0; i<numInteractions-1; ++i) {
+                    if (i != maxWeightI)
+                        weights[i] = 0.;
+                }
+                weights[maxWeightI] = 1.;
+                weights[numInteractions-1] = 0.;
             }
+
 
             // Update weightSum
             for (int i=0; i<numInteractions; ++i)

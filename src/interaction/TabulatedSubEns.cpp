@@ -35,6 +35,8 @@
 #include "FixedPairListTypesInteractionTemplate.hpp"
 #include "DihedralPotential.hpp"
 
+#include <iomanip>
+
 namespace espressopp {
   namespace interaction {
 
@@ -128,8 +130,9 @@ namespace espressopp {
         if (weightCounts > 0 &&
             maxWeightI < numInteractions-1 &&
             maxWeight > 0. &&
-            weightSum[maxWeightI]/weightCounts < 0.98*targetProb[maxWeightI])
+            weightSum[maxWeightI]/weightCounts < targetProb[maxWeightI])
             stuck = true;
+        // std::cout << stuck << " ";
         if (!stuck) {
             maxWeight = 0.;
             maxWeightI = numInteractions-1;
@@ -164,7 +167,7 @@ namespace espressopp {
                 else {
                     if (weightCounts > 0 &&
                         weights[i] > 0.01 &&
-                        weightSum[i]/weightCounts < 0.98*targetProb[i]) {
+                        weightSum[i]/weightCounts < targetProb[i]) {
                         weights[i] = 1.0;
                         maxWeight = 1.;
                     }
@@ -173,6 +176,14 @@ namespace espressopp {
             if (maxWeightI == numInteractions-1)
                 maxWeight = 1.;
             weights[numInteractions-1] = 1. - maxWeight;
+        } else {
+            // Stuck. Full weight on the max surface
+            for (int i=0; i<numInteractions-1; ++i) {
+                if (i != maxWeightI)
+                    weights[i] = 0.;
+            }
+            weights[maxWeightI] = 1.;
+            weights[numInteractions-1] = 0.;
         }
 
         // Update weightSum
@@ -180,6 +191,12 @@ namespace espressopp {
             weightSum[i] += weights[i];
         weightCounts += 1;
         weightMax = maxWeightI;
+
+        // iomanip
+        // std::cout << std::fixed << std::showpos << std::setprecision(2);
+        // std::cout << std::setw(5) << weights[0] << " ";
+        // std::cout << std::setw(5) << weights[1] << " ";
+        // std::cout << std::setw(5) << weights[2] << "\n";
     }
 
     // Collective variables
