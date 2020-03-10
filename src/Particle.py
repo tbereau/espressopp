@@ -73,6 +73,11 @@ The Particle class. Particles are used to model atoms, coarse-grained beads, etc
 
         molecule id (eg. chain id)
 
+.. py:data:: int espressopp.Particle.pot_cv
+
+        associated bonded potential for surface hopping
+
+
 .. py:data:: int espressopp.Particle.pib
 
         path integral bead number (Trotter number)
@@ -296,6 +301,11 @@ class ParticleLocal(object):
     def res_id(self): return self.__getTmp().res_id
     @res_id.setter
     def res_id(self, val): self.__getTmp().res_id = val
+
+    @property
+    def sub_ens_state(self): return self.__getTmp().sub_ens_state
+    @sub_ens_state.setter
+    def sub_ens_state(self, val): self.__getTmp().sub_ens_state = val
 
     def getLocalData(self, key):
         tmp = self.storage.lookupRealParticle(self.pid)

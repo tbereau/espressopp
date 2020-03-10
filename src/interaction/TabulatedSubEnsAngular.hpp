@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018
+  Copyright (C) 2018-2020
       Max Planck Institute for Polymer Research
 
   This file is part of ESPResSo++.
@@ -46,6 +46,7 @@ namespace espressopp {
                 // Running sum of each weight and number of counts
                 RealND weightSum;
                 int weightCounts;
+                int weightMax;
                 // Renormalize collective variables: std
                 RealND colVarSd;
                 // characteristic decay length of the interpolation
@@ -146,6 +147,17 @@ namespace espressopp {
 
                 void computeColVarWeights(const Real3D& dist12,
                     const Real3D& dist32, const bc::BC& bc);
+
+                int getColVarWeightMax() const { return weightMax; };
+
+                void setColVarWeightMax(int _w) {
+                    for (int i=0; i<numInteractions; ++i) {
+                        if (i == _w) weights[i] = 1.0;
+                        else         weights[i] = 0.0;
+                    }
+                }
+
+                RealND getColVarWeights() const { return weights; };
 
                 void setColVar(const Real3D& dist12,
                     const Real3D& dist32, const bc::BC& bc);

@@ -5,7 +5,7 @@
       Max-Planck-Institute for Polymer Research & Fraunhofer SCAI
   Copyright (C) 2017
       Jakub Krajniak (jkrajniak at gmail.com)
-  
+
   This file is part of ESPResSo++.
 
   ESPResSo++ is free software: you can redistribute it and/or modify
@@ -54,6 +54,8 @@ namespace espressopp {
     Real3D fm;
     int state;
     longint res_id;
+    int sub_ens_state;
+
   private:
     friend class boost::serialization::access;
     template< class Archive >
@@ -72,6 +74,7 @@ namespace espressopp {
       ar & lambdaDeriv;
       ar & state;
       ar & res_id;
+      ar & sub_ens_state;
     }
   };
 
@@ -207,22 +210,23 @@ namespace espressopp {
     void init() {
       m.v[0] = m.v[1] = m.v[2] = 0.0;
       m.modemom[0] = m.modemom[1] = m.modemom[2] = 0.0;
-      p.type         = 0;
-      p.mass         = 1.0;
-      p.q            = 0.0;
-      r.radius       = 1.0;
-      f.fradius      = 0.0;
-      p.fm           = 0.0;
-      m.vradius      = 0.0;
-      l.ghost        = false;
-      p.lambda       = 0.0;
+      p.type          = 0;
+      p.mass          = 1.0;
+      p.q             = 0.0;
+      r.radius        = 1.0;
+      f.fradius       = 0.0;
+      p.fm            = 0.0;
+      m.vradius       = 0.0;
+      l.ghost         = false;
+      p.lambda        = 0.0;
       p.varmass       = 0.0;
-      p.drift        = 0.0;
-      p.lambdaDeriv  = 0.0;
-      r.extVar       = 0.0;
-      p.state        = 0;
-      p.pib          = 0;
-      p.res_id       = 0;
+      p.drift         = 0.0;
+      p.lambdaDeriv   = 0.0;
+      r.extVar        = 0.0;
+      p.state         = 0;
+      p.pib           = 0;
+      p.res_id        = 0;
+      p.sub_ens_state = 0;
     }
 
     // getter and setter used for export in Python
@@ -369,6 +373,12 @@ namespace espressopp {
     const int& res_id() const { return p.res_id; }
     int getResId() const { return p.res_id; }
     void setResId(const int& _res_id) { p.res_id = _res_id; }
+
+    // sub_ens_state (associated state for surface hopping)
+    int& sub_ens_state() { return p.sub_ens_state; }
+    const int& sub_ens_state() const { return p.sub_ens_state; }
+    int getSubEnsState() const { return p.sub_ens_state; }
+    void setSubEnsState(const int& _sub_ens_state) { p.sub_ens_state = _sub_ens_state; };
 
     static void registerPython();
 

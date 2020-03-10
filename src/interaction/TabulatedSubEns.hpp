@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018
+  Copyright (C) 2018-2020
       Max Planck Institute for Polymer Research
 
   This file is part of ESPResSo++.
@@ -56,6 +56,7 @@ namespace espressopp {
             // Running sum of each weight and number of counts
             RealND weightSum;
             int weightCounts;
+            int weightMax;
             // Renormalize collective variables: std
             RealND colVarSd;
             // characteristic decay length of the interpolation
@@ -64,6 +65,8 @@ namespace espressopp {
             int colVarBondListSize;
             int colVarAngleListSize;
             int colVarDihedListSize;
+            // For nonbonded i-j: keep track of surface IDs involved
+            std::vector<std::pair <int, int> > weightPairs;
 
         public:
             static void registerPython();
@@ -86,6 +89,9 @@ namespace espressopp {
             void addInteraction(int itype, boost::python::str fname,
                                 const RealND& _cvref);
 
+            void addInteractionNB(int itype, boost::python::str fname,
+                                int _w1, int _w2);
+
             void setDimension(int _dim) {
               numInteractions = _dim;
               colVarRef.setDimension( numInteractions );
@@ -94,6 +100,7 @@ namespace espressopp {
               weights.setDimension( numInteractions );
               weightSum.setDimension( numInteractions );
               targetProb.setDimension( numInteractions );
+              weightPairs.resize( numInteractions );
             }
 
             int getDimension() const { return numInteractions; }
@@ -155,6 +162,26 @@ namespace espressopp {
 
             void computeColVarWeights(const Real3D& dist, const bc::BC& bc);
 
+            int getColVarWeightMax() const { return weightMax; };
+
+            void setColVarWeightMax(int _w) {
+                for (int i=0; i<numInteractions; ++i) {
+                    if (i == _w) weights[i] = 1.0;
+                    else         weights[i] = 0.0;
+                }
+            }
+
+            void setColVarWeightPairMax(int _w1, int _w2) {
+                if (_w1 > _w2) std::swap(_w1, _w2);
+                std::pair <int, int> p = std::make_pair(_w1, _w2);
+                for (int i=0; i<numInteractions; ++i) {
+                  if (p == weightPairs[i]) weights[i] = 1.0;
+                  else                     weights[i] = 0.0;
+                }
+            }
+
+            RealND getColVarWeights() const { return weights; };
+
             void setColVar(const Real3D& dist, const bc::BC& bc);
 
             real _computeEnergySqrRaw(real distSqr) const {
@@ -194,7 +221,6 @@ namespace espressopp {
                                          cvsd, alp, rc);
       }
     };
-
   }
 }
 

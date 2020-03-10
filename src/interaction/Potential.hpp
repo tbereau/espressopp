@@ -1,5 +1,9 @@
 /*
+<<<<<<< HEAD
   Copyright (C) 2012,2013,2018
+=======
+  Copyright (C) 2012,2013,2018-2020
+>>>>>>> surf_nonbond
       Max Planck Institute for Polymer Research
   Copyright (C) 2008,2009,2010,2011
       Max-Planck-Institute for Polymer Research & Fraunhofer SCAI
@@ -61,6 +65,10 @@ namespace espressopp {
       virtual RealND getColVar() const = 0;
 
       virtual void computeColVarWeights(const Real3D& dist, const bc::BC& bc) = 0;
+      virtual RealND getColVarWeights() const = 0;
+      virtual int getColVarWeightMax() const = 0;
+      virtual void setColVarWeightMax(int _w) = 0;
+      virtual void setColVarWeightPairMax(int _w1, int _w2) = 0;
 
       virtual void setShift(real _shift) = 0;
       virtual real getShift() const = 0;
@@ -113,6 +121,11 @@ namespace espressopp {
       virtual RealND getColVar() const;
 
       virtual void computeColVarWeights(const Real3D& dist, const bc::BC& bc);
+      virtual RealND getColVarWeights() const;
+      virtual int getColVarWeightMax() const;
+      virtual void setColVarWeightMax(int _w);
+      virtual void setColVarWeightPairMax(int _w1, int _w2);
+
 
       // Implements the non-virtual interface
       // (used by e.g. the Interaction templates)
@@ -313,6 +326,36 @@ namespace espressopp {
     inline void
     PotentialTemplate< Derived >::
     computeColVarWeights(const Real3D& dist, const bc::BC& bc) {
+        // in general do nothing
+    }
+
+    template < class Derived >
+    inline RealND
+    PotentialTemplate< Derived >::
+    getColVarWeights() const {
+        // in general return an empty RealND
+        return RealND();
+    }
+
+    template < class Derived >
+    inline int
+    PotentialTemplate< Derived >::
+    getColVarWeightMax() const {
+        // in general return 0
+        return 0;
+    }
+
+    template < class Derived >
+    inline void
+    PotentialTemplate< Derived >::
+    setColVarWeightMax(int _w) {
+        // in general do nothing
+    }
+
+    template < class Derived >
+    inline void
+    PotentialTemplate< Derived >::
+    setColVarWeightPairMax(int _w1, int _w2) {
         // in general do nothing
     }
 

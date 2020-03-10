@@ -67,6 +67,9 @@ namespace espressopp {
 
       virtual void computeColVarWeights(const Real3D& dist12,
           const Real3D& dist32, const bc::BC& bc) = 0;
+      virtual RealND getColVarWeights() const = 0;
+      virtual int getColVarWeightMax() const = 0;
+      virtual void setColVarWeightMax(int _w) = 0;
 
       static void registerPython();
 
@@ -116,6 +119,9 @@ namespace espressopp {
 
       virtual void computeColVarWeights(const Real3D& dist12,
           const Real3D& dist32, const bc::BC& bc);
+      virtual RealND getColVarWeights() const;
+      virtual int getColVarWeightMax() const;
+      virtual void setColVarWeightMax(int _w);
 
       // Implements the non-virtual interface
       // (used by e.g. the Interaction templates)
@@ -254,6 +260,29 @@ namespace espressopp {
     AngularPotentialTemplate< Derived >::
     computeColVarWeights(const Real3D& dist12,
         const Real3D& dist32, const bc::BC& bc) {
+        // in general do nothing
+    }
+
+    template < class Derived >
+    inline RealND
+    AngularPotentialTemplate< Derived >::
+    getColVarWeights() const {
+        // in general return an empty RealND
+        return RealND();
+    }
+
+    template < class Derived >
+    inline int
+    AngularPotentialTemplate< Derived >::
+    getColVarWeightMax() const {
+        // in general return 0
+        return 0;
+    }
+
+    template < class Derived >
+    inline void
+    AngularPotentialTemplate< Derived >::
+    setColVarWeightMax(int _w) {
         // in general do nothing
     }
 

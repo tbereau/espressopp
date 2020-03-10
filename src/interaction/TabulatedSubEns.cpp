@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2018
+  Copyright (C) 2018-2020
       Max Planck Institute for Polymer Research
 
   This file is part of ESPResSo++.
@@ -88,6 +88,12 @@ namespace espressopp {
           }
     }
 
+    void TabulatedSubEns::addInteractionNB(int itype,
+        boost::python::str fname, int _w1, int _w2) {
+        TabulatedSubEns::addInteraction(itype, fname, RealND(6));
+        weightPairs.push_back( std::make_pair(_w1, _w2));
+    }
+
     void TabulatedSubEns::setColVarRef(
         const RealNDs& cvRefs){
         // Set the reference values of the collective variables
@@ -119,7 +125,7 @@ namespace espressopp {
         if (weightCounts > 0 &&
             maxWeightI < numInteractions-1 &&
             maxWeight > 0. &&
-            weightSum[maxWeightI]/weightCounts < 0.98*targetProb[maxWeightI])
+            weightSum[maxWeightI]/weightCounts < targetProb[maxWeightI])
             stuck = true;
         if (!stuck) {
             maxWeight = 0.;
@@ -155,7 +161,7 @@ namespace espressopp {
                 else {
                     if (weightCounts > 0 &&
                         weights[i] > 0.01 &&
-                        weightSum[i]/weightCounts < 0.98*targetProb[i]) {
+                        weightSum[i]/weightCounts < targetProb[i]) {
                         weights[i] = 1.0;
                         maxWeight = 1.;
                     }
@@ -164,12 +170,21 @@ namespace espressopp {
             if (maxWeightI == numInteractions-1)
                 maxWeight = 1.;
             weights[numInteractions-1] = 1. - maxWeight;
+        } else {
+            // Stuck. Full weight on the max surface
+            for (int i=0; i<numInteractions-1; ++i) {
+                if (i != maxWeightI)
+                    weights[i] = 0.;
+            }
+            weights[maxWeightI] = 1.;
+            weights[numInteractions-1] = 0.;
         }
 
         // Update weightSum
         for (int i=0; i<numInteractions; ++i)
             weightSum[i] += weights[i];
         weightCounts += 1;
+        weightMax = maxWeightI;
     }
 
     // Collective variables
@@ -256,6 +271,7 @@ namespace espressopp {
             .def("alpha_get", &TabulatedSubEns::getAlpha)
             .def("alpha_set", &TabulatedSubEns::setAlpha)
             .def("addInteraction", &TabulatedSubEns::addInteraction)
+            .def("addInteractionNB", &TabulatedSubEns::addInteractionNB)
             .def("colVarRefs_get", &TabulatedSubEns::getColVarRefs)
             .def("colVarRef_get", &TabulatedSubEns::getColVarRef)
             .def_pickle(TabulatedSubEns_pickle())

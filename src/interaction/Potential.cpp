@@ -73,6 +73,7 @@ namespace espressopp {
 }
 
 
+
 //     class PythonPotential
 //       : public espressopp::python::wrapper< Potential >,
 // 	public PotentialBase< PythonPotential > {

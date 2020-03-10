@@ -72,6 +72,9 @@ namespace espressopp {
       virtual void computeColVarWeights(const Real3D& dist21,
           const Real3D& dist32, const Real3D& dist43,
           const bc::BC& bc) = 0;
+      virtual RealND getColVarWeights() const = 0;
+      virtual int getColVarWeightMax() const = 0;
+      virtual void setColVarWeightMax(int _w) = 0;
 
       static real computePhi(const Real3D& dist21,
                              const Real3D& dist32,
@@ -120,6 +123,9 @@ namespace espressopp {
       virtual void computeColVarWeights(const Real3D& dist21,
           const Real3D& dist32, const Real3D& dist43,
           const bc::BC& bc);
+      virtual RealND getColVarWeights() const;
+      virtual int getColVarWeightMax() const;
+      virtual void setColVarWeightMax(int _w);
 
       // Implements the non-virtual interface
       // (used by e.g. the Interaction templates)
@@ -255,6 +261,29 @@ namespace espressopp {
     DihedralPotentialTemplate< Derived >::
     computeColVarWeights(const Real3D& dist21, const Real3D& dist32,
         const Real3D& dist43, const bc::BC& bc) {
+        // in general do nothing
+    }
+
+    template < class Derived >
+    inline RealND
+    DihedralPotentialTemplate< Derived >::
+    getColVarWeights() const {
+        // in general return an empty RealND
+        return RealND();
+    }
+
+    template < class Derived >
+    inline int
+    DihedralPotentialTemplate< Derived >::
+    getColVarWeightMax() const {
+        // in general return 0
+        return 0;
+    }
+
+    template < class Derived >
+    inline void
+    DihedralPotentialTemplate< Derived >::
+    setColVarWeightMax(int _w) {
         // in general do nothing
     }
 

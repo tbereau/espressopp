@@ -1,5 +1,5 @@
 /*
-  Copyright (C) 2012,2013,2014,2015,2016,2017,2018
+  Copyright (C) 2012,2013,2014,2015,2016,2017,2018,2019,2020
       Max Planck Institute for Polymer Research
   Copyright (C) 2008,2009,2010,2011
       Max-Planck-Institute for Polymer Research & Fraunhofer SCAI
@@ -130,6 +130,9 @@ namespace espressopp {
         bc.getMinimumImageVectorBox(dist32, p3.position(), p2.position());
         Real3D force12, force32;
         potential->computeColVarWeights(dist12, dist32, bc);
+        p1.sub_ens_state() = potential->getColVarWeightMax();
+        p2.sub_ens_state() = potential->getColVarWeightMax();
+        p3.sub_ens_state() = potential->getColVarWeightMax();
         potential->_computeForce(force12, force32, dist12, dist32);
         p1.force() += force12;
         p2.force() -= force12 + force32;
@@ -218,7 +221,6 @@ namespace espressopp {
         bc.getMinimumImageVectorBox(dist12, p1.position(), p2.position());
         bc.getMinimumImageVectorBox(dist32, p3.position(), p2.position());
         Real3D force12, force32;
-        potential->computeColVarWeights(dist12, dist32, bc);
         potential->_computeForce(force12, force32, dist12, dist32);
         w += dist12 * force12 + dist32 * force32;
       }
@@ -243,7 +245,6 @@ namespace espressopp {
         bc.getMinimumImageVectorBox(r12, p1.position(), p2.position());
         bc.getMinimumImageVectorBox(r32, p3.position(), p2.position());
         Real3D force12, force32;
-        potential->computeColVarWeights(r12, r32, bc);
         potential->_computeForce(force12, force32, r12, r32);
         wlocal += Tensor(r12, force12) + Tensor(r32, force32);
       }
