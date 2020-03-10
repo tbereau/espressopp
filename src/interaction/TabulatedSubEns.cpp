@@ -1,10 +1,6 @@
 /*
-  Copyright (C) 2016
-      Jakub Krajniak (jkrajniak at gmail.com)
-  Copyright (C) 2012,2013
+  Copyright (C) 2018-2020
       Max Planck Institute for Polymer Research
-  Copyright (C) 2008,2009,2010,2011
-      Max-Planck-Institute for Polymer Research & Fraunhofer SCAI
 
   This file is part of ESPResSo++.
 
@@ -34,8 +30,6 @@
 #include "FixedPairListInteractionTemplate.hpp"
 #include "FixedPairListTypesInteractionTemplate.hpp"
 #include "DihedralPotential.hpp"
-
-#include <iomanip>
 
 namespace espressopp {
   namespace interaction {
@@ -132,7 +126,6 @@ namespace espressopp {
             maxWeight > 0. &&
             weightSum[maxWeightI]/weightCounts < targetProb[maxWeightI])
             stuck = true;
-        // std::cout << stuck << " ";
         if (!stuck) {
             maxWeight = 0.;
             maxWeightI = numInteractions-1;
@@ -191,12 +184,6 @@ namespace espressopp {
             weightSum[i] += weights[i];
         weightCounts += 1;
         weightMax = maxWeightI;
-
-        // iomanip
-        // std::cout << std::fixed << std::showpos << std::setprecision(2);
-        // std::cout << std::setw(5) << weights[0] << " ";
-        // std::cout << std::setw(5) << weights[1] << " ";
-        // std::cout << std::setw(5) << weights[2] << "\n";
     }
 
     // Collective variables
